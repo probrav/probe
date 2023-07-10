@@ -1,0 +1,81 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mRunning cells with '/bin/python3' requires the ipykernel package.\n",
+      "\u001b[1;31mRun the following command to install 'ipykernel' into the Python environment. \n",
+      "\u001b[1;31mCommand: '/bin/python3 -m pip install ipykernel -U --user --force-reinstall'"
+     ]
+    }
+   ],
+   "source": [
+    "from telegram import ReplyKeyboardMarkup, Update\n",
+    "from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext\n",
+    "def start(update: Update, context: CallbackContext) -> None:\n",
+    "    user = update.effective_user\n",
+    "    name = user.first_name\n",
+    "    context.bot.send_message(chat_id=update.effective_chat.id,\n",
+    "    text=f\"hello, {name}! I'm an application bot. I collect applications and transfer them to the channel administrator.\\n\"\n",
+    "    \"Choose one or more options:\",\n",
+    "    reply_markup=ReplyKeyboardMarkup([['Make an appointment'], ['Apply for tuition'],\n",
+    "    ['Apply for tuition-2'], ['Apply for tuition-3']],\n",
+    "    one_time_keyboard=True))\n",
+    "\n",
+    "def option_handler(update: Update, context: CallbackContext) -> None:\n",
+    "    user = update.effective_user\n",
+    "    name = user.first_name\n",
+    "    text = update.message.text\n",
+    "    context.bot.send_message(chat_id=update.effective_chat.id,\n",
+    "    text=f\"Thank you, {name}! Your request for {text} is submitted.\")\n",
+    "# Log the user's choice of option\n",
+    "with open(\"log.txt\", \"a\") as f:\n",
+    "     f.write(f\"{name} ({user.id}) selected option {text}\\n\")\n",
+    "\n",
+    "def help(update: Update, context: CallbackContext) -> None:\n",
+    "    context.bot.send_message(chat_id=update.effective_chat.id,\n",
+    "    text=\"Выберите одну или несколько опций:\",\n",
+    "    reply_markup=ReplyKeyboardMarkup([['Make an appointment'], ['Apply for tuition'],\n",
+    "    ['Apply for tuition-2'], ['Apply for tuition-3']],\n",
+    "    one_time_keyboard=True))\n",
+    "\n",
+    "def error_handler(update: Update, context: CallbackContext) -> None:\n",
+    "# Log any errors\n",
+    "    context.error(str(update) + context.error)\n",
+    "\n",
+    "def handle_message(update, context):\n",
+    "    message = update.message.text\n",
+    "    # Process the message and generate a response\n",
+    "    response = \"Hello, you wrote: \" + message\n",
+    "    # Send the response back to the user\n",
+    "\"newbot.py\" 50L, 3065B                                                                                                                         2,1           Top\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "name": "python",
+   "version": "3.11.2"
+  },
+  "orig_nbformat": 4,
+  "vscode": {
+   "interpreter": {
+    "hash": "916dbcbb3f70747c44a77c7bcd40155683ae19c65e1c03b4aa3499c5328201f1"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
